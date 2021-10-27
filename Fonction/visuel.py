@@ -18,7 +18,7 @@ def display_base(dis_w, dis_h):
     return screen
 
 def display_button(screen, rect, image, width, height):
-    background = pygame.image.load(image)
+    background = pygame.image.load(image).convert_alpha()
     background = pygame.transform.scale(background, (width, height))
     screen.blit(background, rect)
 
@@ -49,3 +49,10 @@ def coord_size(size_x, size_y, largeur, hauteur):
 def display_visuel(sc, rect, image, sx, sy, w, h):
     coord = coord_size(sx, sy, w, h)
     display_button(sc, rect, image, coord[0], coord[1])
+
+def draw_rect_alpha(surface, rect, color=(255, 0, 0, 255)):
+    shape_surf = pygame.Surface(pygame.Rect(rect).size, pygame.SRCALPHA)
+    rect1 = pygame.draw.rect(shape_surf, color, rect)
+    rect1.update(rect)
+    surface.blit(shape_surf, rect1)
+    return rect1

@@ -3,7 +3,7 @@ import pygame
 from Class.clock_game import ClockGame
 from Class.player import Player
 from Fonction.visuel import coord_button, display_base, display_info_code, display_info_money, display_info_stock_code, \
-    coord, display_visuel
+    coord, display_visuel, draw_rect_alpha
 
 
 def bot_autominer(code, bot, tick):
@@ -78,7 +78,7 @@ class Game:
                         self.p.active_decrease_energy()
                         self.code += self.inc_code
 
-            icon_activity = pygame.draw.rect(self.screen, (0, 0, 0), coord_button(95, 0, 10, 7, self.dis_w, self.dis_h))
+            icon_activity = draw_rect_alpha(self.screen, coord_button(95, 0, 10, 7, self.dis_w, self.dis_h))
             display_visuel(self.screen, icon_activity, "Asset/HUD/button/" + self.p.activity + ".png", 5, 7, self.dis_w, self.dis_h)
             if icon_activity.collidepoint(pos):
                 if self.click:
