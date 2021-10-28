@@ -79,14 +79,14 @@ class Game:
                         self.code += self.inc_code
 
             icon_activity = draw_rect_alpha(self.screen, coord_button(95, 0, 10, 7, self.dis_w, self.dis_h))
-            display_visuel(self.screen, icon_activity, "Asset/HUD/button/" + self.p.activity + ".png", 5, 7, self.dis_w, self.dis_h)
+            display_visuel(self.screen, icon_activity, "Asset/HUD/button/activity/" + self.p.activity + ".png", 5, 7, self.dis_w, self.dis_h)
             if icon_activity.collidepoint(pos):
                 if self.click:
                     self.p.activity = "sleep" if self.p.activity == "work" else "work"
 
-            icon_speed_time = pygame.draw.rect(self.screen, "blue", coord_button(60, 3, 5, 5, self.dis_w, self.dis_h))
+            icon_speed_time = draw_rect_alpha(self.screen, coord_button(55, 3, 5, 3, self.dis_w, self.dis_h))
+            display_visuel(self.screen, icon_speed_time, "Asset/HUD/button/speed_clock/fleche_" + str(self.speed_time) + ".png", 3, 5, self.dis_w, self.dis_h)
             if icon_speed_time.collidepoint(pos):
-                pygame.draw.rect(self.screen, "green", coord_button(60, 3, 5, 5, self.dis_w, self.dis_h))
                 if self.click:
                     self.speed_time = self.speed_time + 1 if self.speed_time < 3 else 1
                     self.update_speed_time(self.speed_time)
