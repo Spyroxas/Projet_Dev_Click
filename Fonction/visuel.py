@@ -8,11 +8,11 @@ def DrawText(screen, text, text_color, x, y, fsize):
     text_rect.center = (x, y)
     screen.blit(text, text_rect)
 
-def display_base(dis_w, dis_h):
+def display_base(dis_w, dis_h, image_path):
     pygame.display.set_mode((dis_w, dis_h))
     pygame.display.set_caption("Dev Clicker")
     screen = pygame.display.set_mode((dis_w, dis_h))
-    background = pygame.image.load("Asset/HUD/bg.PNG")
+    background = pygame.image.load(image_path)
     background = pygame.transform.scale(background, (dis_w, dis_h))
     screen.blit(background, (0, 0))
     return screen

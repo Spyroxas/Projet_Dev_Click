@@ -27,7 +27,7 @@ class Game:
         self.clock_tick = 50
         self.clock_tick_bot = 0.6
         self.clock_bot = self.clock_tick * self.clock_tick_bot
-        self.screen = display_base(self.dis_w, self.dis_h)
+        self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg.PNG")
 
         self.cg = ClockGame()
         self.p = Player()
@@ -59,7 +59,7 @@ class Game:
 
     def run(self, clock):
         while self.running_game:
-            display_base(self.dis_w, self.dis_h)
+            display_base(self.dis_w, self.dis_h, "Asset/HUD/bg.PNG")
             self.update_progress_code()
             self.p.update_progress_energy(self.screen, self.dis_w, self.dis_h)
             display_info_code(self.screen, self.code)
