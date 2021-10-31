@@ -3,7 +3,7 @@ import pygame
 from Class.clock_game import ClockGame
 from Class.player import Player
 from Fonction.visuel import coord_button, display_base, display_info_code, display_info_money, display_info_stock_code, \
-    coord, display_visuel, draw_rect_alpha
+    coord, rect_with_alpha
 
 
 def bot_autominer(code, bot, tick):
@@ -78,14 +78,12 @@ class Game:
                         self.p.active_decrease_energy()
                         self.code += self.inc_code
 
-            icon_activity = draw_rect_alpha(self.screen, coord_button(95, 0, 10, 7, self.dis_w, self.dis_h))
-            display_visuel(self.screen, icon_activity, "Asset/HUD/button/activity/" + self.p.activity + ".png", 5, 7, self.dis_w, self.dis_h)
+            icon_activity = rect_with_alpha(self.screen, coord_button(95, 0, 10, 7, self.dis_w, self.dis_h), "Asset/HUD/button/activity/" + self.p.activity + ".png", 5, 7, self.dis_w, self.dis_h)
             if icon_activity.collidepoint(pos):
                 if self.click:
                     self.p.activity = "sleep" if self.p.activity == "work" else "work"
 
-            icon_speed_time = draw_rect_alpha(self.screen, coord_button(55, 3, 5, 3, self.dis_w, self.dis_h))
-            display_visuel(self.screen, icon_speed_time, "Asset/HUD/button/speed_clock/fleche_" + str(self.speed_time) + ".png", 3, 5, self.dis_w, self.dis_h)
+            icon_speed_time = rect_with_alpha(self.screen, coord_button(55, 3, 5, 3, self.dis_w, self.dis_h), "Asset/HUD/button/speed_clock/fleche_" + str(self.speed_time) + ".png", 3, 5, self.dis_w, self.dis_h)
             if icon_speed_time.collidepoint(pos):
                 if self.click:
                     self.speed_time = self.speed_time + 1 if self.speed_time < 3 else 1

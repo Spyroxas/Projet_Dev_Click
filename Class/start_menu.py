@@ -1,6 +1,6 @@
 import pygame
 
-from Fonction.visuel import display_base, coord_button, draw_rect_alpha, display_visuel
+from Fonction.visuel import display_base, coord_button, rect_with_alpha
 
 
 class StartMenu:
@@ -16,8 +16,7 @@ class StartMenu:
         while self.running_game:
             pos = pygame.mouse.get_pos()
 
-            start = draw_rect_alpha(self.screen, coord_button(61, 28, 15, 6, self.dis_w, self.dis_h))
-            display_visuel(self.screen, start, "Asset/nothing.png", 5, 7, self.dis_w, self.dis_h)
+            start = rect_with_alpha(self.screen, coord_button(61, 28, 15, 6, self.dis_w, self.dis_h), "Asset/nothing.png", 5, 7, self.dis_w, self.dis_h)
             if start.collidepoint(pos):
                 if self.click:
                     self.running_game = False
