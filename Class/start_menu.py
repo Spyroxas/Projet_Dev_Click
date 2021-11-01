@@ -25,7 +25,8 @@ class StartMenu:
             self.click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.running_game = False
+                    pygame.quit()
+                    quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self.click = True
 
