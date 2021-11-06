@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import *
 
 from Class.clock_game import ClockGame
 from Class.player import Player
@@ -28,6 +29,7 @@ class Game:
         self.clock_tick_bot = 0.6
         self.clock_bot = self.clock_tick * self.clock_tick_bot
         self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg.PNG")
+        self.pause = False
 
         self.cg = ClockGame()
         self.p = Player()
@@ -59,55 +61,77 @@ class Game:
 
     def run(self, clock):
         while self.running_game:
-            display_base(self.dis_w, self.dis_h, "Asset/HUD/bg.PNG")
-            self.update_progress_code()
-            self.p.update_progress_energy(self.screen, self.dis_w, self.dis_h)
-            display_info_code(self.screen, self.code)
-            display_info_stock_code(self.screen, self.p.stock_code)
-            display_info_money(self.screen, self.p.get_money())
 
             pos = pygame.mouse.get_pos()
 
-            if self.p.activity == "work":
-                clicker = pygame.draw.rect(self.screen, "blue", coord_button(14.5, 14.5 , 68.5, 65, self.dis_w, self.dis_h))
-                clicker_image = pygame.image.load("Asset/HUD/clickers/clickers_1/c_1.PNG")
-                clicker_image = pygame.transform.scale(clicker_image, (coord(68.5, self.dis_w), coord(65, self.dis_h)))
-                self.screen.blit(clicker_image, clicker)
-                if clicker.collidepoint(pos) and self.p.energy > 0:
+            if not self.pause:
+                display_base(self.dis_w, self.dis_h, "Asset/HUD/bg.PNG")
+                self.update_progress_code()
+                self.p.update_progress_energy(self.screen, self.dis_w, self.dis_h)
+                display_info_code(self.screen, self.code)
+                display_info_stock_code(self.screen, self.p.stock_code)
+                display_info_money(self.screen, self.p.get_money())
+
+                pause = rect_with_alpha(self.screen, coord_button(70, 3, 6, 10, self.dis_w, self.dis_h),"Asset/HUD/button/menu/bouton-pause.png", 6, 10, self.dis_w, self.dis_h)
+                if pause.collidepoint(pos) and self.click:
+                    self.pause = True
+
+                if self.p.activity == "work":
+                    clicker = pygame.draw.rect(self.screen, "blue", coord_button(14.5, 14.5 , 68.5, 65, self.dis_w, self.dis_h))
+                    clicker_image = pygame.image.load("Asset/HUD/clickers/clickers_1/c_1.PNG")
+                    clicker_image = pygame.transform.scale(clicker_image, (coord(68.5, self.dis_w), coord(65, self.dis_h)))
+                    self.screen.blit(clicker_image, clicker)
+                    if clicker.collidepoint(pos) and self.p.energy > 0:
+                        if self.click:
+                            self.p.active_decrease_energy()
+                            self.code += self.inc_code
+
+                icon_activity = rect_with_alpha(self.screen, coord_button(95, 0, 10, 7, self.dis_w, self.dis_h), "Asset/HUD/button/activity/" + self.p.activity + ".png", 5, 7, self.dis_w, self.dis_h)
+                if icon_activity.collidepoint(pos):
                     if self.click:
-                        self.p.active_decrease_energy()
-                        self.code += self.inc_code
+                        self.p.activity = "sleep" if self.p.activity == "work" else "work"
 
-            icon_activity = rect_with_alpha(self.screen, coord_button(95, 0, 10, 7, self.dis_w, self.dis_h), "Asset/HUD/button/activity/" + self.p.activity + ".png", 5, 7, self.dis_w, self.dis_h)
-            if icon_activity.collidepoint(pos):
-                if self.click:
-                    self.p.activity = "sleep" if self.p.activity == "work" else "work"
-
-            icon_speed_time = rect_with_alpha(self.screen, coord_button(55, 3, 5, 3, self.dis_w, self.dis_h), "Asset/HUD/button/speed_clock/fleche_" + str(self.speed_time) + ".png", 3, 5, self.dis_w, self.dis_h)
-            if icon_speed_time.collidepoint(pos):
-                if self.click:
-                    self.speed_time = self.speed_time + 1 if self.speed_time < 3 else 1
-                    self.update_speed_time(self.speed_time)
-
-            if self.p.get_money() >= self.cost:
-                autocompletion = pygame.draw.rect(self.screen, "blue", coord_button(80, 90 , 20, 10, self.dis_w, self.dis_h))
-                if autocompletion.collidepoint(pos):
-                    pygame.draw.rect(self.screen, "green", coord_button(80, 90 , 20, 10, self.dis_w, self.dis_h))
+                icon_speed_time = rect_with_alpha(self.screen, coord_button(55, 3, 5, 3, self.dis_w, self.dis_h), "Asset/HUD/button/speed_clock/fleche_" + str(self.speed_time) + ".png", 3, 5, self.dis_w, self.dis_h)
+                if icon_speed_time.collidepoint(pos):
                     if self.click:
-                        self.bot += self.inc_bot
-                        self.code -= self.cost
+                        self.speed_time = self.speed_time + 1 if self.speed_time < 3 else 1
+                        self.update_speed_time(self.speed_time)
 
-            self.code = bot_autominer(self.code, self.bot, self.clock_bot)
-            self.finish_a_code()
+                if self.p.get_money() >= self.cost:
+                    autocompletion = pygame.draw.rect(self.screen, "blue", coord_button(80, 90 , 20, 10, self.dis_w, self.dis_h))
+                    if autocompletion.collidepoint(pos):
+                        pygame.draw.rect(self.screen, "green", coord_button(80, 90 , 20, 10, self.dis_w, self.dis_h))
+                        if self.click:
+                            self.bot += self.inc_bot
+                            self.code -= self.cost
 
-            # GESTION DES EVENTS
-            self.click = False
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running_game = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.click = True
+                self.code = bot_autominer(self.code, self.bot, self.clock_bot)
+                self.finish_a_code()
 
-            self.cg.show_main_clock(self.screen, self.p, self.dis_w / 2, 50, 25)
+                # GESTION DES EVENTS
+                self.click = False
+                for event in pygame.event.get():
+                    if event.type == QUIT:
+                        self.running_game = False
+                    elif event.type == MOUSEBUTTONDOWN:
+                        self.click = True
+                    elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                        self.pause = True
+
+                self.cg.show_main_clock(self.screen, self.p, self.dis_w / 2, 50, 25)
+
+            else:
+                display_base(self.dis_w, self.dis_h, "Asset/HUD/bg-pause.PNG")
+                pause = rect_with_alpha(self.screen, coord_button(80, 3, 6, 10, self.dis_w, self.dis_h), "Asset/HUD/button/menu/bouton-pause.png", 6, 10, self.dis_w, self.dis_h)
+                if pause.collidepoint(pos) and self.click:
+                    self.pause = False
+
+                for event in pygame.event.get():
+                    if event.type == QUIT:
+                        self.running_game = False
+                    elif event.type == MOUSEBUTTONDOWN:
+                        self.click = True
+                    elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                        self.pause = False
             pygame.display.update()
             clock.tick(self.clock_tick)

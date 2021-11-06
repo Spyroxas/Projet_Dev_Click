@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import *
 
 from Fonction.visuel import display_base, coord_button, rect_with_alpha
 
@@ -24,10 +25,10 @@ class Menu:
             # GESTION DES EVENTS
             self.click = False
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == QUIT:
                     pygame.quit()
                     quit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                elif event.type == MOUSEBUTTONDOWN:
                     self.click = True
 
             pygame.display.update()
