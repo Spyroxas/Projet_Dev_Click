@@ -66,7 +66,7 @@ class ClockGame:
     def init_date(self):
         curr_date = datetime.datetime.now().strftime("%m/%d/%y")
         self.date_game = datetime.datetime.strptime(curr_date, "%m/%d/%y").strftime("%A %d %B %Y")
-        self.date_since_start = datetime.datetime.strptime("01/01/0001", "%m/%d/%Y").strftime("%A %d %B %Y")
+        self.date_since_start = datetime.datetime.strptime("01/01/0001", "%m/%d/%Y").strftime("%d jour %m mois %Y année")
 
     def show_main_clock(self, screen, p, x, y, size):
         self.inc_speed += 1
@@ -80,7 +80,7 @@ class ClockGame:
             if self.hour >= 24:
                 self.hour = 0
                 self.date_game = (datetime.datetime.strptime(str(self.date_game), "%A %d %B %Y") + datetime.timedelta(days=1)).strftime("%A %d %B %Y")
-                self.date_since_start = (datetime.datetime.strptime(str(self.date_since_start), "%A %d %B %Y") + datetime.timedelta(days=1)).strftime("%A %d %B %Y")
+                self.date_since_start = (datetime.datetime.strptime(str(self.date_since_start), "%d jour %m mois %Y année") + datetime.timedelta(days=1)).strftime("%d jour %m mois %Y année")
         str_hour, str_minute = refacto_format(self.hour, self.minute)
 
         draw_markings(screen, x, y)
