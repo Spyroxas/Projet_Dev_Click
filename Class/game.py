@@ -3,8 +3,9 @@ from pygame.locals import *
 
 from Class.clock_game import ClockGame
 from Class.player import Player
+from Class.stock_exchange import StockExchange
 from Fonction.visuel import coord_button, display_base, display_info_code, display_info_money, display_info_stock_code, \
-    coord, rect_with_alpha
+    coord, rect_with_alpha, display_info_stock_exchange
 
 
 def bot_autominer(code, bot, tick):
@@ -33,6 +34,8 @@ class Game:
 
         self.cg = ClockGame()
         self.p = Player()
+
+        self.se = StockExchange()
         self.cg.init_date()
 
     def update_progress_code(self):
@@ -86,6 +89,13 @@ class Game:
                             self.p.active_decrease_energy()
                             self.code += self.inc_code
 
+                    w_stockexchange = rect_with_alpha(self.screen, coord_button(80, 40, 13, 10, self.dis_w, self.dis_h), "Asset/HUD/clickers/clickers_1/c_1.PNG", 13, 10, self.dis_w, self.dis_h)
+                    display_info_stock_exchange(self.screen, self.se.get_stock_exchange_prize())
+                    if w_stockexchange.collidepoint(pos):
+                        if self.click:
+                            self.p.money += self.se.sale_code(self.p.stock_code)
+                            self.p.stock_code = 0
+
                 icon_activity = rect_with_alpha(self.screen, coord_button(95, 0, 10, 7, self.dis_w, self.dis_h), "Asset/HUD/button/activity/" + self.p.activity + ".png", 5, 7, self.dis_w, self.dis_h)
                 if icon_activity.collidepoint(pos):
                     if self.click:
@@ -118,7 +128,7 @@ class Game:
                     elif event.type == KEYDOWN and event.key == K_ESCAPE:
                         self.pause = True
 
-                self.cg.show_main_clock(self.screen, self.p, self.dis_w / 2, 50, 25)
+                self.cg.show_main_clock(self.screen, self.p, self.se, self.dis_w / 2, 50, 25)
 
             else:
                 display_base(self.dis_w, self.dis_h, "Asset/HUD/bg-pause.PNG")

@@ -8,11 +8,11 @@ if __name__ == '__main__':
     pygame.init()
     clock = pygame.time.Clock()
 
-    start = StartMenu()
-    start.run(clock=clock)
-
-    menu = Menu()
-    menu.run(clock=clock)
+    # start = StartMenu()
+    # start.run(clock=clock)
+    #
+    # menu = Menu()
+    # menu.run(clock=clock)
 
     game = Game()
     game.run(clock=clock)

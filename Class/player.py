@@ -55,7 +55,6 @@ class Player:
         elif self.activity == "sleep":
             bonus = 2 if its_night(self.night_hour, self.night_min, self.morning_hour, self.morning_min, hour, min) else 1
             self.energy = self.energy + (self.pass_sleep_ener * bonus) if self.energy < 100 else 100
-        print(self.energy)
 
     def active_decrease_energy(self):
         self.energy -= self.acti_dec_ener

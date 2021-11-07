@@ -31,6 +31,9 @@ def display_info_stock_code(screen, stock_code):
 def display_info_money(screen, money):
     DrawText(screen, str(f'{money}') + "€", "white", 100, 150, 20)
 
+def display_info_stock_exchange(screen, stock_exchange_prize):
+    DrawText(screen, str(f'{stock_exchange_prize}') + "€", "blue", 1100, 320, 20)
+
 def coord(coordonnee, max_coord):
     return (coordonnee / 100) * max_coord
 

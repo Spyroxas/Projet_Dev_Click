@@ -68,12 +68,13 @@ class ClockGame:
         self.date_game = datetime.datetime.strptime(curr_date, "%m/%d/%y").strftime("%A %d %B %Y")
         self.date_since_start = datetime.datetime.strptime("01/01/0001", "%m/%d/%Y").strftime("%d jour %m mois %Y année")
 
-    def show_main_clock(self, screen, p, x, y, size):
+    def show_main_clock(self, screen, p, se, x, y, size):
         self.inc_speed += 1
         if self.inc_speed >= self.speed:
             self.inc_speed = 0
             self.minute += 1
             p.passive_energy(self.hour, self.minute)
+            se.update_coefficient()
         if self.minute >= 60:
             self.minute = 0
             self.hour += 1
