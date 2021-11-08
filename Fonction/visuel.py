@@ -17,6 +17,11 @@ def display_base(dis_w, dis_h, image_path):
     screen.blit(background, (0, 0))
     return screen
 
+def display_base_alpha(dis_w, dis_h, screen, image_path):
+    background = pygame.image.load(image_path).convert_alpha()
+    background = pygame.transform.scale(background, (dis_w, dis_h))
+    screen.blit(background, (0, 0))
+
 def display_button(screen, rect, image, width, height):
     background = pygame.image.load(image).convert_alpha()
     background = pygame.transform.scale(background, (width, height))

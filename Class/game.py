@@ -5,7 +5,7 @@ from Class.clock_game import ClockGame
 from Class.player import Player
 from Class.stock_exchange import StockExchange
 from Fonction.visuel import coord_button, display_base, display_info_code, display_info_money, display_info_stock_code, \
-    coord, rect_with_alpha, display_info_stock_exchange
+    coord, rect_with_alpha, display_info_stock_exchange, display_base_alpha
 
 
 def bot_autominer(code, bot, tick):
@@ -68,14 +68,15 @@ class Game:
             pos = pygame.mouse.get_pos()
 
             if not self.pause:
-                display_base(self.dis_w, self.dis_h, "Asset/HUD/bg.PNG")
+                self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg/bg_room.png")
+                display_base_alpha(self.dis_w, self.dis_h, self.screen, "Asset/HUD/bg_opaque.PNG")
                 self.update_progress_code()
                 self.p.update_progress_energy(self.screen, self.dis_w, self.dis_h)
                 display_info_code(self.screen, self.code)
                 display_info_stock_code(self.screen, self.p.stock_code)
                 display_info_money(self.screen, self.p.get_money())
 
-                pause = rect_with_alpha(self.screen, coord_button(70, 3, 6, 10, self.dis_w, self.dis_h),"Asset/HUD/button/menu/bouton-pause.png", 6, 10, self.dis_w, self.dis_h)
+                pause = rect_with_alpha(self.screen, coord_button(70, 3, 6, 10, self.dis_w, self.dis_h), "Asset/HUD/button/menu/bouton-pause.png", 6, 10, self.dis_w, self.dis_h)
                 if pause.collidepoint(pos) and self.click:
                     self.pause = True
 
