@@ -8,11 +8,6 @@ from Fonction.visuel import coord_button, display_base, display_info_code, displ
     coord, rect_with_alpha, display_info_stock_exchange, display_base_alpha
 
 
-def bot_autominer(code, bot, tick):
-    code += (bot/tick)
-    return code
-
-
 class Game:
     def __init__(self):
         self.running_game = True
@@ -31,6 +26,7 @@ class Game:
         self.clock_bot = self.clock_tick * self.clock_tick_bot
         self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg.PNG")
         self.pause = False
+        self.room = False
 
         self.cg = ClockGame()
         self.p = Player()
@@ -69,38 +65,44 @@ class Game:
 
             if not self.pause:
                 self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg/bg_room.png")
-                display_base_alpha(self.dis_w, self.dis_h, self.screen, "Asset/HUD/bg_opaque.PNG")
-                self.update_progress_code()
-                self.p.update_progress_energy(self.screen, self.dis_w, self.dis_h)
-                display_info_code(self.screen, self.code)
-                display_info_stock_code(self.screen, self.p.stock_code)
-                display_info_money(self.screen, self.p.get_money())
+                if not self.room:
+                    display_base_alpha(self.dis_w, self.dis_h, self.screen, "Asset/HUD/bg_opaque.PNG")
+                    self.update_progress_code()
+                    self.p.update_progress_energy(self.screen, self.dis_w, self.dis_h)
+                    display_info_code(self.screen, self.code)
+                    display_info_stock_code(self.screen, self.p.stock_code)
+                    display_info_money(self.screen, self.p.get_money())
+
+                bg_room = rect_with_alpha(self.screen, coord_button(10, 80, 6, 10, self.dis_w, self.dis_h), "Asset/HUD/button/background_button/bouton-bg.png", 6, 10, self.dis_w, self.dis_h)
+                if bg_room.collidepoint(pos) and self.click:
+                    self.room = not self.room
 
                 pause = rect_with_alpha(self.screen, coord_button(70, 3, 6, 10, self.dis_w, self.dis_h), "Asset/HUD/button/menu/bouton-pause.png", 6, 10, self.dis_w, self.dis_h)
                 if pause.collidepoint(pos) and self.click:
                     self.pause = True
 
-                if self.p.activity == "work":
-                    clicker = pygame.draw.rect(self.screen, "blue", coord_button(14.5, 14.5 , 68.5, 65, self.dis_w, self.dis_h))
-                    clicker_image = pygame.image.load("Asset/HUD/clickers/clickers_1/c_1.PNG")
-                    clicker_image = pygame.transform.scale(clicker_image, (coord(68.5, self.dis_w), coord(65, self.dis_h)))
-                    self.screen.blit(clicker_image, clicker)
-                    if clicker.collidepoint(pos) and self.p.energy > 0:
-                        if self.click:
-                            self.p.active_decrease_energy()
-                            self.code += self.inc_code
+                if not self.room:
+                    if self.p.activity == "work":
+                        clicker = pygame.draw.rect(self.screen, "blue", coord_button(14.5, 14.5 , 68.5, 65, self.dis_w, self.dis_h))
+                        clicker_image = pygame.image.load("Asset/HUD/clickers/clickers_1/c_1.PNG")
+                        clicker_image = pygame.transform.scale(clicker_image, (coord(68.5, self.dis_w), coord(65, self.dis_h)))
+                        self.screen.blit(clicker_image, clicker)
+                        if clicker.collidepoint(pos) and self.p.energy > 0:
+                            if self.click:
+                                self.p.active_decrease_energy()
+                                self.code += self.inc_code
 
-                    w_stockexchange = rect_with_alpha(self.screen, coord_button(80, 40, 13, 10, self.dis_w, self.dis_h), "Asset/HUD/clickers/clickers_1/c_1.PNG", 13, 10, self.dis_w, self.dis_h)
-                    display_info_stock_exchange(self.screen, self.se.get_stock_exchange_prize())
-                    if w_stockexchange.collidepoint(pos):
-                        if self.click:
-                            self.p.money += self.se.sale_code(self.p.stock_code)
-                            self.p.stock_code = 0
+                        w_stockexchange = rect_with_alpha(self.screen, coord_button(80, 40, 13, 10, self.dis_w, self.dis_h), "Asset/HUD/clickers/clickers_1/c_1.PNG", 13, 10, self.dis_w, self.dis_h)
+                        display_info_stock_exchange(self.screen, self.se.get_stock_exchange_prize())
+                        if w_stockexchange.collidepoint(pos):
+                            if self.click:
+                                self.p.money += self.se.sale_code(self.p.stock_code)
+                                self.p.stock_code = 0
 
-                icon_activity = rect_with_alpha(self.screen, coord_button(95, 0, 10, 7, self.dis_w, self.dis_h), "Asset/HUD/button/activity/" + self.p.activity + ".png", 5, 7, self.dis_w, self.dis_h)
-                if icon_activity.collidepoint(pos):
-                    if self.click:
-                        self.p.activity = "sleep" if self.p.activity == "work" else "work"
+                    icon_activity = rect_with_alpha(self.screen, coord_button(95, 0, 10, 7, self.dis_w, self.dis_h), "Asset/HUD/button/activity/" + self.p.activity + ".png", 5, 7, self.dis_w, self.dis_h)
+                    if icon_activity.collidepoint(pos):
+                        if self.click:
+                            self.p.activity = "sleep" if self.p.activity == "work" else "work"
 
                 icon_speed_time = rect_with_alpha(self.screen, coord_button(55, 3, 5, 3, self.dis_w, self.dis_h), "Asset/HUD/button/speed_clock/fleche_" + str(self.speed_time) + ".png", 3, 5, self.dis_w, self.dis_h)
                 if icon_speed_time.collidepoint(pos):
@@ -108,15 +110,6 @@ class Game:
                         self.speed_time = self.speed_time + 1 if self.speed_time < 3 else 1
                         self.update_speed_time(self.speed_time)
 
-                if self.p.get_money() >= self.cost:
-                    autocompletion = pygame.draw.rect(self.screen, "blue", coord_button(80, 90 , 20, 10, self.dis_w, self.dis_h))
-                    if autocompletion.collidepoint(pos):
-                        pygame.draw.rect(self.screen, "green", coord_button(80, 90 , 20, 10, self.dis_w, self.dis_h))
-                        if self.click:
-                            self.bot += self.inc_bot
-                            self.code -= self.cost
-
-                self.code = bot_autominer(self.code, self.bot, self.clock_bot)
                 self.finish_a_code()
 
                 # GESTION DES EVENTS
