@@ -1,32 +1,30 @@
 import pygame
 from pygame.locals import *
 
-from Fonction.visuel import display_base, coord_button, rect_with_alpha
+from Fonction.visuel import coord_button, rect_with_alpha, display_base
 
 
-class Menu:
+class Option:
     def __init__(self):
         self.dis_w = 1280
         self.dis_h = 720
         self.clock_tick = 50
         self.running_game = True
         self.click = False
-        self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg/menu.PNG")
+        self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg/option.png")
 
-    def run(self, clock, option_menu):
+    def set_running_game(self, value):
+        self.running_game = value
+
+    def run(self, clock):
         while self.running_game:
-            self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg/menu.PNG")
+            self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg/option.png")
 
             pos = pygame.mouse.get_pos()
 
             start = rect_with_alpha(self.screen, coord_button(36, 65, 24, 10, self.dis_w, self.dis_h), "Asset/nothing.PNG", 5, 7, self.dis_w, self.dis_h)
             if start.collidepoint(pos) and self.click:
                 self.running_game = False
-
-            option = rect_with_alpha(self.screen, coord_button(36, 80, 24, 10, self.dis_w, self.dis_h), "Asset/nothing.PNG", 5, 7, self.dis_w, self.dis_h)
-            if option.collidepoint(pos) and self.click:
-                option_menu.set_running_game(True)
-                option_menu.run(clock)
 
             # GESTION DES EVENTS
             self.click = False
@@ -36,6 +34,8 @@ class Menu:
                     quit()
                 elif event.type == MOUSEBUTTONDOWN:
                     self.click = True
+                elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                    self.running_game = False
 
             pygame.display.update()
             clock.tick(self.clock_tick)
