@@ -19,11 +19,11 @@ class Menu:
 
             pos = pygame.mouse.get_pos()
 
-            start = rect_with_alpha(self.screen, coord_button(36, 65, 24, 10, self.dis_w, self.dis_h), "Asset/nothing.PNG", 5, 7, self.dis_w, self.dis_h)
+            start = rect_with_alpha(self.screen, 36, 65, 24, 10, "Asset/nothing.PNG", self.dis_w, self.dis_h)
             if start.collidepoint(pos) and self.click:
                 self.running_game = False
 
-            option = rect_with_alpha(self.screen, coord_button(36, 80, 24, 10, self.dis_w, self.dis_h), "Asset/nothing.PNG", 5, 7, self.dis_w, self.dis_h)
+            option = rect_with_alpha(self.screen, 36, 80, 24, 10, "Asset/nothing.PNG", self.dis_w, self.dis_h)
             if option.collidepoint(pos) and self.click:
                 option_menu.set_running_game(True)
                 option_menu.run(clock)

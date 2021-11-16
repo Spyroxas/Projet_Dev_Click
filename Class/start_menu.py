@@ -17,7 +17,7 @@ class StartMenu:
         while self.running_game:
             pos = pygame.mouse.get_pos()
 
-            start = rect_with_alpha(self.screen, coord_button(61, 28, 15, 6, self.dis_w, self.dis_h), "Asset/nothing.png", 5, 7, self.dis_w, self.dis_h)
+            start = rect_with_alpha(self.screen, 61, 28, 15, 6, "Asset/nothing.png", self.dis_w, self.dis_h)
             if start.collidepoint(pos):
                 if self.click:
                     self.running_game = False

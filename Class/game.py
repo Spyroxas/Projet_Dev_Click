@@ -73,38 +73,35 @@ class Game:
                     display_info_stock_code(self.screen, self.p.stock_code)
                     display_info_money(self.screen, self.p.get_money())
 
-                bg_room = rect_with_alpha(self.screen, coord_button(10, 80, 6, 10, self.dis_w, self.dis_h), "Asset/HUD/button/background_button/bouton-bg.png", 6, 10, self.dis_w, self.dis_h)
+                bg_room = rect_with_alpha(self.screen, 10, 80, 6, 10, "Asset/HUD/button/background_button/bouton-bg.png", self.dis_w, self.dis_h)
                 if bg_room.collidepoint(pos) and self.click:
                     self.room = not self.room
 
-                pause = rect_with_alpha(self.screen, coord_button(70, 3, 6, 10, self.dis_w, self.dis_h), "Asset/HUD/button/menu/bouton-pause.png", 6, 10, self.dis_w, self.dis_h)
+                pause = rect_with_alpha(self.screen, 70, 3, 6, 10, "Asset/HUD/button/menu/bouton-pause.png", self.dis_w, self.dis_h)
                 if pause.collidepoint(pos) and self.click:
                     self.pause = True
 
                 if not self.room:
                     if self.p.activity == "work":
-                        clicker = pygame.draw.rect(self.screen, "blue", coord_button(14.5, 14.5 , 68.5, 65, self.dis_w, self.dis_h))
-                        clicker_image = pygame.image.load("Asset/HUD/clickers/clickers_1/c_1.PNG")
-                        clicker_image = pygame.transform.scale(clicker_image, (coord(68.5, self.dis_w), coord(65, self.dis_h)))
-                        self.screen.blit(clicker_image, clicker)
+                        clicker = rect_with_alpha(self.screen, 14.5, 14.5, 68.5, 65, "Asset/HUD/clickers/clickers_1/c_1.PNG", self.dis_w, self.dis_h)
                         if clicker.collidepoint(pos) and self.p.energy > 0:
                             if self.click:
                                 self.p.active_decrease_energy()
                                 self.code += self.inc_code
 
-                        w_stockexchange = rect_with_alpha(self.screen, coord_button(80, 40, 13, 10, self.dis_w, self.dis_h), "Asset/HUD/clickers/clickers_1/c_1.PNG", 13, 10, self.dis_w, self.dis_h)
+                        w_stockexchange = rect_with_alpha(self.screen, 80, 40, 13, 10, "Asset/HUD/clickers/clickers_1/c_1.PNG", self.dis_w, self.dis_h)
                         display_info_stock_exchange(self.screen, self.se.get_stock_exchange_prize())
                         if w_stockexchange.collidepoint(pos):
                             if self.click:
                                 self.p.money += self.se.sale_code(self.p.stock_code)
                                 self.p.stock_code = 0
 
-                    icon_activity = rect_with_alpha(self.screen, coord_button(95, 0, 10, 7, self.dis_w, self.dis_h), "Asset/HUD/button/activity/" + self.p.activity + ".png", 5, 7, self.dis_w, self.dis_h)
+                    icon_activity = rect_with_alpha(self.screen, 95, 0, 10, 7, "Asset/HUD/button/activity/" + self.p.activity + ".png", self.dis_w, self.dis_h)
                     if icon_activity.collidepoint(pos):
                         if self.click:
                             self.p.activity = "sleep" if self.p.activity == "work" else "work"
 
-                icon_speed_time = rect_with_alpha(self.screen, coord_button(55, 3, 5, 3, self.dis_w, self.dis_h), "Asset/HUD/button/speed_clock/fleche_" + str(self.speed_time) + ".png", 3, 5, self.dis_w, self.dis_h)
+                icon_speed_time = rect_with_alpha(self.screen, 55, 3, 5, 3, "Asset/HUD/button/speed_clock/fleche_" + str(self.speed_time) + ".png", self.dis_w, self.dis_h)
                 if icon_speed_time.collidepoint(pos):
                     if self.click:
                         self.speed_time = self.speed_time + 1 if self.speed_time < 3 else 1
@@ -126,7 +123,7 @@ class Game:
 
             else:
                 display_base(self.dis_w, self.dis_h, "Asset/HUD/bg-pause.PNG")
-                pause = rect_with_alpha(self.screen, coord_button(80, 3, 6, 10, self.dis_w, self.dis_h), "Asset/HUD/button/menu/bouton-pause.png", 6, 10, self.dis_w, self.dis_h)
+                pause = rect_with_alpha(self.screen, 80, 3, 6, 10, "Asset/HUD/button/menu/bouton-pause.png", self.dis_w, self.dis_h)
                 if pause.collidepoint(pos) and self.click:
                     self.pause = False
 

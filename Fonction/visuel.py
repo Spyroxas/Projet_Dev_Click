@@ -59,12 +59,13 @@ def coord_size(size_x, size_y, largeur, hauteur):
     size_y = (size_y / 100) * hauteur
     return size_x, size_y
 
-def rect_with_alpha(sc, rect, image, sx, sy, w, h):
+def rect_with_alpha(sc, coord_x, coord_y, size_x, size_y, image, w, h):
+    rect = coord_button(coord_x, coord_y, size_x, size_y, w, h)
     shape_surf = pygame.Surface(pygame.Rect(rect).size, pygame.SRCALPHA)
     new_rect = pygame.draw.rect(shape_surf, (0, 0, 0, 255), rect)
     new_rect.update(rect)
     sc.blit(shape_surf, new_rect)
-    coord = coord_size(sx, sy, w, h)
+    coord = coord_size(size_x, size_y, w, h)
     display_button(sc, new_rect, image, coord[0], coord[1])
     return new_rect
 
