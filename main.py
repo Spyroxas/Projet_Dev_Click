@@ -14,10 +14,10 @@ if __name__ == '__main__':
     # start.run(clock=clock)
 
     menu = Menu()
-    menu.run(clock=clock, option_menu=option)
+    menu.run(clock=clock, opt=option)
 
     game = Game()
-    game.run(clock=clock)
+    game.run(clock=clock, opt=option)
 
 pygame.quit()
 quit()

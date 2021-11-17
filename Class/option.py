@@ -22,8 +22,17 @@ class Option:
         self.dis_w = w
         self.dis_h = h
 
+    def get_w(self):
+        return self.dis_w
+
+    def get_h(self):
+        return self.dis_h
+
     def get_w_and_h(self):
         return self.dis_w, self.dis_h
+
+    def get_fullscreen(self):
+        return self.fullscreen
 
     def run(self, clock):
         list1 = OptionBox(

@@ -1,32 +1,35 @@
 import pygame
 from pygame.locals import *
 
-from Fonction.visuel import display_base, coord_button, rect_with_alpha
+from Fonction.visuel import display_base, rect_with_alpha, display_image
 
 
 class Menu:
     def __init__(self):
-        self.dis_w = 1280
-        self.dis_h = 720
         self.clock_tick = 50
         self.running_game = True
         self.click = False
-        self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg/menu.PNG")
+        self. first_time = True
 
-    def run(self, clock, option_menu):
+    def run(self, clock, opt):
         while self.running_game:
-            self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg/menu.PNG")
+            if opt.get_fullscreen() and not self.first_time:
+                display_image(opt.get_w() , opt.get_h(), "Asset/HUD/bg/menu.PNG", screen)
+                screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+            else:
+                screen = display_base(opt.get_w() , opt.get_h(), "Asset/HUD/bg/menu.PNG")
+                self.first_time = False
 
             pos = pygame.mouse.get_pos()
 
-            start = rect_with_alpha(self.screen, 36, 65, 24, 10, "Asset/nothing.PNG", self.dis_w, self.dis_h)
+            start = rect_with_alpha(screen, 36, 65, 24, 10, "Asset/nothing.PNG", opt.get_w() , opt.get_h())
             if start.collidepoint(pos) and self.click:
                 self.running_game = False
 
-            option = rect_with_alpha(self.screen, 36, 80, 24, 10, "Asset/nothing.PNG", self.dis_w, self.dis_h)
+            option = rect_with_alpha(screen, 36, 80, 24, 10, "Asset/nothing.PNG", opt.get_w(), opt.get_h())
             if option.collidepoint(pos) and self.click:
-                option_menu.set_running_game(True)
-                option_menu.run(clock)
+                opt.set_running_game(True)
+                opt.run(clock)
 
             # GESTION DES EVENTS
             self.click = False
