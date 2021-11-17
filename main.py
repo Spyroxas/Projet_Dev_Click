@@ -10,8 +10,8 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     option = Option()
 
-    # start = StartMenu()
-    # start.run(clock=clock)
+    start = StartMenu()
+    start.run(clock=clock, opt=option)
 
     menu = Menu()
     menu.run(clock=clock, opt=option)

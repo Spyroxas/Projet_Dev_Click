@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 
-from Fonction.visuel import display_base, coord_button, rect_with_alpha
+from Fonction.visuel import rect_with_alpha
 
 
 class StartMenu:
@@ -11,13 +11,14 @@ class StartMenu:
         self.clock_tick = 50
         self.running_game = True
         self.click = False
-        self.screen = display_base(self.dis_w, self.dis_h, "Asset/HUD/bg/start_menu.PNG")
 
-    def run(self, clock):
+    def run(self, clock, opt):
         while self.running_game:
+            screen = opt.screen_management("Asset/HUD/bg/start_menu.PNG")
+
             pos = pygame.mouse.get_pos()
 
-            start = rect_with_alpha(self.screen, 61, 28, 15, 6, "Asset/nothing.png", self.dis_w, self.dis_h)
+            start = rect_with_alpha(screen, 61, 28, 15, 6, "Asset/nothing.png", self.dis_w, self.dis_h)
             if start.collidepoint(pos):
                 if self.click:
                     self.running_game = False

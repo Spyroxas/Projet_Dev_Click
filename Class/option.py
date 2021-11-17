@@ -34,6 +34,17 @@ class Option:
     def get_fullscreen(self):
         return self.fullscreen
 
+    def get_screen(self):
+        return self.screen
+
+    def screen_management(self, image):
+        if self.fullscreen:
+            display_image(self.dis_w, self.dis_h, image, self.screen)
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        else:
+            self.screen = display_base(self.dis_w, self.dis_h, image)
+        return self.screen
+
     def run(self, clock):
         list1 = OptionBox(
             coord_button(20, 40, 20, 10, self.dis_w, self.dis_h)[0], coord_button(20, 40, 20, 10, self.dis_w, self.dis_h)[1],

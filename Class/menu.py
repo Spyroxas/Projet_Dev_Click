@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 
-from Fonction.visuel import display_base, rect_with_alpha, display_image
+from Fonction.visuel import rect_with_alpha
 
 
 class Menu:
@@ -13,12 +13,7 @@ class Menu:
 
     def run(self, clock, opt):
         while self.running_game:
-            if opt.get_fullscreen() and not self.first_time:
-                display_image(opt.get_w() , opt.get_h(), "Asset/HUD/bg/menu.PNG", screen)
-                screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-            else:
-                screen = display_base(opt.get_w() , opt.get_h(), "Asset/HUD/bg/menu.PNG")
-                self.first_time = False
+            screen = opt.screen_management("Asset/HUD/bg/menu.PNG")
 
             pos = pygame.mouse.get_pos()
 
